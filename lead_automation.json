@@ -1,0 +1,437 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1zuCbZEkP_Vi71DBdm9aBQ9rfJQ_wdV0PGYcmHRKWZUM",
+          "mode": "list",
+          "cachedResultName": "CRM_Lead_Tracker",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zuCbZEkP_Vi71DBdm9aBQ9rfJQ_wdV0PGYcmHRKWZUM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 761528206,
+          "mode": "list",
+          "cachedResultName": "Form responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zuCbZEkP_Vi71DBdm9aBQ9rfJQ_wdV0PGYcmHRKWZUM/edit#gid=761528206"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        660,
+        0
+      ],
+      "id": "344e8caf-018b-47d0-adff-921619a0a0b1",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5TryxzNwzarUFjXY",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"Bearer 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\",\n  \"Content-Type\": \"application/json\"\n}\n",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"meta-llama/llama-3-8b-instruct\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a strict assistant. Write only a short plain-text welcome email. Do not include a subject line, any headers, placeholders, or sign-offs. Do not mention the sender’s company or name. Mention only the recipient’s name, their company, designation, and area of interest. Keep the tone friendly and professional. The response must be 3 to 5 natural sentences only — not overly short or overly detailed.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Write a welcome email addressed to {{ $json.Name }}, who is a {{ $json.Designation }} at {{ $json.Company }} and is interested in {{ $json['Area of Interest'] }}. This is a plain text email. Do not include a subject or closing. This email should feel like it’s coming from a professional team.\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        0
+      ],
+      "id": "94e3b08b-a7f2-4e2e-89eb-2b39d5f066d5",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1zuCbZEkP_Vi71DBdm9aBQ9rfJQ_wdV0PGYcmHRKWZUM",
+          "mode": "list",
+          "cachedResultName": "CRM_Lead_Tracker",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zuCbZEkP_Vi71DBdm9aBQ9rfJQ_wdV0PGYcmHRKWZUM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 761528206,
+          "mode": "list",
+          "cachedResultName": "Form responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zuCbZEkP_Vi71DBdm9aBQ9rfJQ_wdV0PGYcmHRKWZUM/edit#gid=761528206"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {
+            "Timestamp": "={{$json[\"Timestamp\"]}}\n"
+          },
+          "matchingColumns": [
+            "Timestamp"
+          ],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Designation",
+              "displayName": "Designation",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Area of Interest",
+              "displayName": "Area of Interest",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Lead Owner",
+              "displayName": "Lead Owner",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Priority",
+              "displayName": "Priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Welcome Email Draft",
+              "displayName": "Welcome Email Draft",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Follow-up Date",
+              "displayName": "Follow-up Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "provider",
+              "displayName": "provider",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "model",
+              "displayName": "model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "object",
+              "displayName": "object",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created",
+              "displayName": "created",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "choices",
+              "displayName": "choices",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "usage",
+              "displayName": "usage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1540,
+        0
+      ],
+      "id": "fb757c11-2bd7-4cc0-a1af-1e041bfbe452",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5TryxzNwzarUFjXY",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bdfbce62-f362-4f47-9d1d-617b5661d028",
+              "name": "Email",
+              "value": "={{ $node[\"Get row(s) in sheet\"].json[\"Email\"] }}\n",
+              "type": "string"
+            },
+            {
+              "id": "fa31d57b-50eb-4a79-b340-bbd4bb625027",
+              "name": "Welcome Email Draft",
+              "value": "={{ $node[\"HTTP Request\"].json[\"choices\"][0][\"message\"][\"content\"] }}\n",
+              "type": "string"
+            },
+            {
+              "id": "1be1b69d-a2b0-444a-9ce0-91d3b513cb72",
+              "name": "Timestamp",
+              "value": "={{ $node[\"Get row(s) in sheet\"].json[\"Timestamp\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1100,
+        0
+      ],
+      "id": "7313687e-f696-49e5-bdb6-1df7835c4bf5",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "Welcome! This is a sample project by Sushmitha",
+        "emailType": "text",
+        "message": "={{ $json[\"Welcome Email Draft\"] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1760,
+        0
+      ],
+      "id": "cc358a29-d1ad-4d30-8408-ba678676aa31",
+      "name": "Send a message",
+      "webhookId": "b97056ad-2018-4394-9131-54018d3e5eeb",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "sqy74pwTtb0SSoXi",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ],
+      "id": "a39eeff4-160d-4640-8eda-8216cc1cdedd",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3706fe57-1040-4a62-82a5-f5acb6fbaf0b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "718da8dc06e9183fff07b0494ca16dfbd927113b28aa3d6e1d9cf9673969c67b"
+  },
+  "id": "4kpBPxhCwLFA1k4I",
+  "tags": []
+}
