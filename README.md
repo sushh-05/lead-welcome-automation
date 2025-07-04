@@ -29,3 +29,4 @@ Useful for educators, small business owners, or service providers who want to au
 # Status
 
 Fully working with manual trigger mode. Can also be expanded to support real-time automation using Google Apps Script and webhook integration.
+GForms tested with: https://forms.gle/ysMTuMR7SsZz5LuD7
